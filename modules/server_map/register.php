@@ -25,7 +25,7 @@ class VavtServerMap
 
 	function enqueue_files()
 	{
-		
+
 		wp_enqueue_style('interactive_server_map_fontawesome.css', "https://use.fontawesome.com/releases/v5.0.13/css/all.css", [], self::VERSION);
 		wp_enqueue_style('interactive_server_map_font.css', "https://fonts.googleapis.com/css2?family=Roboto&display=swap", [], self::VERSION);
 		wp_enqueue_style('interactive_server_map.css', plugins_url('/css/app.css', __FILE__),  [], self::VERSION);
@@ -80,16 +80,15 @@ class VavtServerMap
 	function get_prepared_providers()
 	{
 		$providers = [];
-		$prov_args = [
+
+		$posts = get_posts([
 			'posts_per_page' => -1,
-			'post_type'   => 'post',
 			'category_name' => 'vpn-anbieter,anbieter',
-		];
+			'include' => $this->get_product_post_map()
+		]);
 
-		$prov_query = new wp_query($prov_args);
-
-		foreach ($prov_query->posts as $raw) {
-			$providers[$raw->ID] = new Provider($raw);
+		foreach ($posts as $post) {
+			$providers[$post->ID] = new Provider($post);
 		}
 
 		return $providers;
@@ -99,6 +98,13 @@ class VavtServerMap
 	{
 		/** Contains function which import fields */
 		require_once __DIR__ . '/inc/fields.php';
+	}
+
+	function get_product_post_map($type = 'vpn')
+	{
+		if (!file_exists(K8_PATH_LOC . '/' . 'vpnidPid.json')) return [];
+
+		if ($type === 'vpn') return array_map(fn($map) => $map['pid'], json_decode(file_get_contents(K8_PATH_LOC . '/' . 'vpnidPid.json'), true));
 	}
 }
 
