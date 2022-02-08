@@ -6,6 +6,8 @@ use vavt_interactive\modules\server_map\Provider;
 class VavtServerMap
 {
 
+	const VERSION = '1.0.2';
+
 	const COUNTRY_TAXONOMY = 'vpnstandortelaender';
 
 	function __construct()
@@ -23,12 +25,13 @@ class VavtServerMap
 
 	function enqueue_files()
 	{
-		wp_enqueue_style('interactive_server_map_fontawesome.css', "https://use.fontawesome.com/releases/v5.0.13/css/all.css");
-		wp_enqueue_style('interactive_server_map_font.css', "https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-		wp_enqueue_style('interactive_server_map.css', plugins_url('/css/app.css', __FILE__));
-		wp_enqueue_script('interactive_server_map_gstatic.js', "https://www.gstatic.com/charts/loader.js", ['jquery']);
-		wp_enqueue_script('interactive_server_map_chunk-vendor.js', plugins_url('/lib/chunk-vendor.js', __FILE__), ['jquery']);
-		wp_enqueue_script('interactive_server_map.js', plugins_url('/lib/app.js', __FILE__), ['jquery']);
+		
+		wp_enqueue_style('interactive_server_map_fontawesome.css', "https://use.fontawesome.com/releases/v5.0.13/css/all.css", [], self::VERSION);
+		wp_enqueue_style('interactive_server_map_font.css', "https://fonts.googleapis.com/css2?family=Roboto&display=swap", [], self::VERSION);
+		wp_enqueue_style('interactive_server_map.css', plugins_url('/css/app.css', __FILE__),  [], self::VERSION);
+		wp_enqueue_script('interactive_server_map_gstatic.js', "https://www.gstatic.com/charts/loader.js", ['jquery'], self::VERSION);
+		wp_enqueue_script('interactive_server_map_chunk-vendor.js', plugins_url('/lib/chunk-vendor.js', __FILE__), ['jquery'], self::VERSION);
+		wp_enqueue_script('interactive_server_map.js', plugins_url('/lib/app.js', __FILE__), ['jquery'], self::VERSION);
 	}
 
 	function generate_json()
