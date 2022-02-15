@@ -31,14 +31,26 @@ class Video {
 	}
 
 	public function convert_atts_to_html($attributes){
-		return join(' ', array_map(function($key) use ($attributes)
-		{
-		   if(is_bool($attributes[$key]))
-		   {
-			  return $attributes[$key]?$key:'';
-		   }
-		   return $key.'="'.$attributes[$key].'"';
-		}, array_keys($attributes)));
+		// echo '<pre>';
+		// print_r($attributes);
+		// echo '</pre>';
+		$attz="";
+
+		foreach ($attributes as $key => $value) {
+			if ($key==='src')
+				continue;
+			$attz .= " " . $key . "=" . $value . " ";
+		}
+		return $attz;
+
+		// return join(' ', array_map(function($key) use ($attributes)
+		// {
+		//    if(is_bool($attributes[$key]))
+		//    {
+		// 	  return $attributes[$key]?$key:'';
+		//    }
+		//    return $key.'="'.$attributes[$key].'"';
+		// }, array_keys($attributes)));
 	}
 
 	public function register_script() {
